@@ -1,0 +1,44 @@
+1 задание
+
+SELECT first_name, last_name, salary, department_id
+FROM EMPLOYEES
+WHERE DEPARTMENT_ID = 50 AND SALARY >= 40
+
+SELECT first_name, last_name
+FROM EMPLOYEES
+WHERE last_name LIKE '%_a'
+
+SELECT first_name, last_name, department_id, commission_pct
+FROM EMPLOYEES
+WHERE department_id IN (50, 80) AND commission_pct IS NOT NULL
+
+SELECT first_name, last_name
+FROM EMPLOYEES
+WHERE last_name LIKE '%_nn_%'
+
+SELECT COUNT(1), MIN(salary), MAX(salary), MIN(hire_date), MAX(hire_date)  
+FROM EMPLOYEES
+GROUP BY department_id
+ORDER BY 1 DESC
+
+SELECT COUNT(1), COUNT(salary), department_id
+FROM EMPLOYEES
+GROUP BY department_id
+
+SELECT COUNT(1), MAX(salary)
+FROM EMPLOYEES
+WHERE job_id LIKE '%_CLERK'
+
+SELECT manager_id
+FROM employees
+GROUP BY manager_id
+HAVING (COUNT(manager_id) > 5) AND (SUM(salary)> 50000)
+
+SELECT first_name, last_name, manager_id, commission_pct
+FROM employees
+WHERE salary BETWEEN 6000 AND 9000 AND commission_pct IS NOT NULL
+
+SELECT department_id
+FROM employees
+GROUP BY department_id
+HAVING COUNT(job_id)>1
