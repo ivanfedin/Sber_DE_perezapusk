@@ -4,7 +4,7 @@ WHERE DEPARTMENT_ID = 50 AND SALARY >= 40
 
 SELECT first_name, last_name
 FROM EMPLOYEES
-WHERE last_name LIKE '%_a'
+WHERE first_name LIKE '%_a'
 
 SELECT first_name, last_name, department_id, commission_pct
 FROM EMPLOYEES
@@ -19,27 +19,29 @@ FROM EMPLOYEES
 GROUP BY department_id
 ORDER BY 1 DESC
 
-SELECT COUNT(1), COUNT(salary), department_id
+SELECT COUNT(1), department_id
 FROM EMPLOYEES
-GROUP BY department_id
+GROUP BY department_id, salary
 
 SELECT COUNT(1), MAX(salary)
 FROM EMPLOYEES
 WHERE job_id LIKE '%_CLERK'
 
-SELECT manager_id
-FROM employees
-GROUP BY manager_id
-HAVING (COUNT(manager_id) > 5) AND (SUM(salary)> 50000)
+SELECT manager_id, count(*)
+FROM employees m 
+WHERE manager_id is not null
+group by manager_id
+having count(*) > 5
 
-SELECT first_name, last_name, manager_id, commission_pct
+SELECT manager_id, AVG(salary) 
 FROM employees
-WHERE salary BETWEEN 6000 AND 9000 AND commission_pct IS NOT NULL
+WHERE salary BETWEEN 6000 AND 9000 AND commission_pct IS NULL
+group by manager_id
 
-SELECT department_id
+SELECT department_id, COUNT(job_id)
 FROM employees
-GROUP BY department_id
-HAVING COUNT(job_id)>1
+GROUP BY department_id 
+HAVING COUNT(job_id) > 1
 
 
 
