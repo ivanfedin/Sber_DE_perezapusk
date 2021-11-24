@@ -1,1 +1,17 @@
+1) CREATE INDEX IDX_PB_LN ON Phonebook(LAST_NAME)
+2) CREATE INDEX IDX_PB_LN1 ON Phonebook(LAST_NAME)
+3) CREATE INDEX IDX_PB_LN2 ON Phonebook(LAST_NAME, FIRST_NAME, MIDDLE_NAME)
+4) CREATE INDEX IDX_PB_LN3 ON Phonebook(LAST_NAME, FIRST_NAME, MIDDLE_NAME)
 
+5) CREATE INDEX IDX_PB_FNLNMN Phonebook(LAST_NAME, FIRST_NAME, MIDDLE_NAME) INCL (Birthdate)
+   CREATE INDEX IDX_PB_FNLNMN ON Phonebook(LAST_NAME, FIRST_NAME, MIDDLE_NAME)
+
+6) CREATE INDEX IDX_PB_TIDPH Phonebook(LAST_NAME, FIRST_NAME, MIDDLE_NAME) INCL (ID)
+   CREATE INDEX IDX_PB_TIDPH ON Phonebook(TAXID, PHONE_NUMBER )
+
+7) Индекс создавать нужно, если нужен быстрый поиск, как указано в запросе, то для ускорения нужно выполнения запроса необходимы индексы
+
+8) Нет необходимости создавать второй индекс если в предыдущем уже прописан необходимый нам индекс
+
+9) создание большого количества индексов приведет к ненужному заполнению памяти, замедлит операции добавления, обновления, удаления
+строк таблицы, поскольку при этом приходится обновлять сами индексы
