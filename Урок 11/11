@@ -1,0 +1,63 @@
+1) declare
+FULL_NAME VARCHAR2;
+FIRST_NAME := (SELECT FIRST_NAME FROM Phonebook WHERE FULL_NAME is null);
+LAST_NAME := (SELECT LAST_NAME FROM Phonebook WHERE FULL_NAME is null);
+MIDDLE_NAME := (SELECT MIDDLE_NAME FROM Phonebook WHERE FULL_NAME is null);
+begin
+UPDATE Phonebook SET FULL_NAME = (FIRST_NAME || LAST_NAME || MIDDLE_NAME);
+end;
+-- тут нет процедуры + нет решения. например так
+create or replace procedure get_FULL_NAME  
+(
+p_FIRST_NAME in varchar2 default null, 
+p_LAST_NAME in varchar2 default null,
+p_MIDDLE_NAME in varchar2 default null,
+p_FULL_NAME in varchar2 default null
+) as 
+begin
+    if p_FULL_NAME is not null then
+        insert into Phonebook(FULL_NAME) 
+        values (p_FULL_NAME);
+    else 
+        if p_FULL_NAME is null then
+        insert into Phonebook(FULL_NAME) 
+        values (p_LAST_NAME||' '||p_FIRST_NAME||' '||p_MIDDLE_NAME); 
+        end if; 
+    end if;
+end;
+
+
+
+2) CREATE FUNCTION MYNVL(P_VALUE IN VARCHAR2) 
+RETURN VARCHAR2 
+IS BEGIN 
+RETURN DECODE(P_VALUE, NULL, 'EMPTY', P_VALUE); 
+END;
+
+
+вообщем у меня слишком много вопросов осталось по этой теме, мне кажется тут одной лекции недостаточно, 
+
+
+да, вот ответ
+
+--3) Создать пакет  и  функцию в нем, которая на основе столбца даты рождения выводило сообщение: 
+--3.1) Человеку нет 18 лет.
+--3.2) Человеку более 120 лет.
+--3.3) Человек еще не родился.
+create or replace package package_years as
+function check_year(p_years in varchar2) return varchar2;
+end package_years;
+
+create or replace package body package_years as
+    function check_year(p_years in varchar2)
+    return varchar2
+    as
+begin 
+return
+    case 
+        when to_date(p_years, 'dd-mm-yyyy')>to_date(sysdate, 'dd-mm-yyyy') then 'Человек еще не родился'
+        when (months_between(to_date(sysdate, 'dd-mm-yyyy'),to_date(p_years,'dd-mm-yyyy'))/12) < 18 then 'Человеку нет 18 лет'
+        when (months_between(to_date(sysdate, 'dd-mm-yyyy'),to_date(p_years,'dd-mm-yyyy'))/12) > 120 then 'Человеку более 120 лет'
+    end;
+end check_year;
+end package_years;
