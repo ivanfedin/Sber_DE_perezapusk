@@ -1,0 +1,54 @@
+1. 
+CREATE VIEW v_employees AS
+SELECT first_name, last_name, salary
+FROM employees
+WHERE salary BETWEEN 1000 AND 3000;
+
+2. 
+2.1
+create or replace TRIGGER T_phonebook
+BEFORE
+INSERT ON phonebook
+DECLARE 
+p_FIRST_NAME in varchar2 default null, 
+p_LAST_NAME in varchar2 default null,
+p_MIDDLE_NAME in varchar2 default null,
+p_FULL_NAME in varchar2 default null
+BEGIN
+CASE
+    WHEN FULL_NAME is not null then
+        insert into Phonebook(FULL_NAME) 
+        values (FULL_NAME);
+    else 
+        WHEN FULL_NAME is null then
+        insert into Phonebook(FULL_NAME) 
+        values (LAST_NAME||' '||FIRST_NAME||' '||MIDDLE_NAME);
+    end case;
+end;
+
+
+2.2
+CREATE OR REPLACE TRIGGER T_phonebook_B_I_2
+BEFORE
+INSERT ON phonebook
+DECLARE TAXID in varchar2 default null
+BEGIN
+CASE
+    WHEN TAXID is null 
+    then dbms_output.put_line('TAXID не может быть пустым');
+END case;
+END;
+
+3.
+\
+
+
+НАПРИМЕР текста
+III. Написать pl/sql-код по созданию процедуры, которая принимает sql-код в формате текста, а внутри данной процедуры вызывается присланный текст.
+Используем Native dynamic SQL
+
+create or replace procedure dynamic_sql (some_string VARCHAR2)
+IS
+BEGIN
+    EXECUTE IMMEDIATE some_string;
+END;
